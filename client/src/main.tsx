@@ -9,8 +9,19 @@ import { startThree } from './startup/startThree.ts'
 const three = initThree()
 startThree(three)
 
+let scroll = 0
+
+const moveCamera = () => {
+  scroll = document.body.getBoundingClientRect().top
+  three.camera.position.z = scroll * -0.01
+  three.camera.position.x = scroll * -0.0002
+  three.camera.position.y = 10 + scroll * -0.0002
+}
+
+document.body.onscroll = moveCamera
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <App scrollPosition={scroll} />
   </React.StrictMode>
 )

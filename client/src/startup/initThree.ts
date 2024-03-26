@@ -9,16 +9,27 @@ export const initThree = (): IThree => {
     0.1,
     1000
   )
-  camera.position.y = 10
+  const t = document.body.getBoundingClientRect().top
+  camera.position.z = t * -0.01
+  camera.position.x = t * -0.0002
+  camera.position.y = 10 + t * -0.0002
   camera.rotation.x = -0.2
+
   const canvas = document.querySelector('#bg')
 
   const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
+    alpha: true,
+    antialias: true
   })
   renderer.setPixelRatio(window.devicePixelRatio)
   renderer.setSize(window.innerWidth, window.innerHeight)
-  camera.position.setZ(30)
+  window.addEventListener("resize", event => {
+    camera.aspect = innerWidth / innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth, innerHeight);
+  })
+
   return {
     scene: scene,
     camera: camera,

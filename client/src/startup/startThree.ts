@@ -1,8 +1,12 @@
 import * as THREE from 'three'
 import { IThree } from '../types'
 import { OrbitControls } from 'three/examples/jsm/Addons.js'
+import { theme } from '../theme'
 
 export const startThree = ({scene, camera, renderer}: IThree) => {
+  // Add background
+  // scene.background = new THREE.Color(theme.colors.sky)
+  
   // Add plane
   let geometry = new THREE.PlaneGeometry(30, 1000)
   let material = new THREE.MeshStandardMaterial({
@@ -15,21 +19,19 @@ export const startThree = ({scene, camera, renderer}: IThree) => {
 
   // Add box
   geometry = new THREE.BoxGeometry( 5, 5, 5 ); 
-  material = new THREE.MeshStandardMaterial( {color: 0x00ff00} ); 
+  material = new THREE.MeshStandardMaterial( {color: theme.colors.light} ); 
   const cube = new THREE.Mesh( geometry, material );
-  cube.position.y = 2.5
+  cube.position.y = 10
+  cube.position.z = -3
   scene.add( cube );
 
   // Add light
-  const pointLight = new THREE.PointLight(0xffffff, 200)
-  pointLight.position.set(0, 10, 0)
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.05)
-  scene.add(ambientLight, pointLight)
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
+  scene.add(ambientLight)
 
   // Add helpers
-  const lightHelper = new THREE.PointLightHelper(pointLight)
   const gridHelper = new THREE.GridHelper(200, 50)
-  scene.add(lightHelper, gridHelper)
+  scene.add( gridHelper)
 
   const addStar = () => {
     const geometry = new THREE.SphereGeometry(0.25, 24, 24)
@@ -42,10 +44,6 @@ export const startThree = ({scene, camera, renderer}: IThree) => {
   }
 
   Array(200).fill(0).forEach(addStar)
-
-  // Add skybox
-  const loader = new THREE.TextureLoader();
-  scene.background = loader.load('../assets/andro.jpg')
 
   // const controls = new OrbitControls(camera, renderer.domElement)
 
